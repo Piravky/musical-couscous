@@ -1,0 +1,169 @@
+get_books:
+  summary: "Получить список книг"
+  description: |
+    Получить пагинированный список книг с возможностью фильтрации.
+    
+    ## Параметры фильтрации:
+    - **search**: Поиск по названию книги
+    - **author**: Фильтр по автору  
+    - **category**: Фильтр по категории
+    
+    ## Пагинация:
+    - **page**: Номер страницы (начинается с 1)
+    - **per_page**: Количество элементов на странице (максимум 20)
+  responses:
+    200:
+      description: "Успешное получение списка книг"
+      content:
+        application/json:
+          example:
+            books:
+              id: "550e8400-e29b-41d4-a716-446655440000"
+              title: "Война и мир"
+              author: "Лев Толстой"
+              isbn: "978-5-04-123456-7"
+              category: "Роман"
+            total: 150
+            page: 1
+            per_page: 10
+            pages: 15
+            has_next: true
+            has_prev: false
+
+get_book:
+  summary: "Получить книгу по ID"
+  description: |
+    Получить полную информацию о книге по её уникальному идентификатору (UUID).
+    
+    ## Параметры запроса:
+    - **book_id**: Уникальный идентификатор книги
+  responses:
+    200:
+      description: "Успешное получение книги"
+      content:
+        application/json:
+          example:
+            id: "550e8400-e29b-41d4-a716-446655440000"
+            title: "Война и мир"
+            author: "Лев Толстой"
+            isbn: "978-5-04-123456-7"
+            category: "Роман"
+    400:
+      description: "Передан некорректный UUID"
+      content:
+        application/json:
+          examples:
+            invalid_uuid:
+              summary: "Некорректный UUID"
+              value:
+                detail: "Invalid book id"
+    404:
+      description: "Книга отсутствует в базе данных"
+      content:
+        application/json:
+          examples:
+            book_not_found:
+              summary: "Книга не найдена"
+              value:
+                detail: "Book not found"
+
+create_book:
+  summary: "Создать новую книгу"
+  description: |
+    Создать новую книгу в системе. Книга будет добавлена с автоматически сгенерированным UUID.
+    
+    ## Параметры запроса:
+    - **title**: Название книги
+    - **author**: Автор книги
+    - **isbn**: Уникальный номер книжного издания
+    - **category**: Жанр книги
+  responses:
+    201:
+      description: "Книга успешно создана"
+      content:
+        application/json:
+          example:
+            id: "550e8400-e29b-41d4-a716-446655440000"
+            title: "Война и мир"
+            author: "Лев Толстой"
+            isbn: "978-5-04-123456-7"
+            category: "Роман"
+    400:
+      description: "Книга находится в базе данных по заданному isbn"
+      content:
+        application/json:
+          examples:
+            book_exist:
+              summary: "Книга существует"
+              value:
+                detail: "Book already exist"
+
+update_book:
+  summary: "Обновить информацию о книге"
+  description: |
+    Частично обновить информацию о книге. Обновляются только переданные поля.
+    
+    ## Параметры запроса:
+    - **book_id**: Уникальный идентификатор книги
+  responses:
+    200:
+      description: "Книга успешно обновлена"
+      content:
+        application/json:
+          example:
+            id: "550e8400-e29b-41d4-a716-446655440000"
+            title: "Война и мир"
+            author: "Лев Толстой"
+            isbn: "978-5-04-123456-7"
+            category: "Роман"
+    400:
+      description: "Проблема с введенными данными"
+      content:
+        application/json:
+          examples:
+            invalid_uuid:
+              summary: "Некорректный UUID"
+              value:
+                detail: "Invalid book id"
+            conflict_isbn:
+              summary: "Некорректный isbn"
+              value:
+                detail: "Book with ISBN 9bd-5-04-123456-7 already exist"
+    404:
+      description: "Книга отсутствует в базе данных"
+      content:
+        application/json:
+          examples:
+            book_not_found:
+              summary: "Книга не найдена"
+              value:
+                detail: "Book not found"
+
+delete_book:
+  summary: "Удалить книгу"
+  description: |
+    Удалить книгу из системы по её UUID. **Операция необратима.**
+    
+    ## Параметры запроса:
+    - **book_id**: Уникальный идентификатор книги
+  responses:
+    204:
+      description: "Книга успешно удалена"
+    400:
+      description: "Передан неверный UUID"
+      content:
+        application/json:
+          examples:
+            invalid_uuid:
+              summary: "Неверный UUID"
+              value:
+                detail: "Invalid book id"
+    404:
+      description: "Книга отсутствует в базе данных"
+      content:
+        application/json:
+          examples:
+            book_not_found:
+              summary: "Книга не найдена"
+              value:
+                detail: "Book not found"
