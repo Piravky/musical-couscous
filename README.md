@@ -52,6 +52,9 @@ DB_USER=user
 DB_PORT=5432
 DB_PASSWORD=password
 DB_DATABASE=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=postgres
 ```
 
 ### 5. Настройка базы данных
